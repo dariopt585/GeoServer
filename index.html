@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #map {
+            width: 100%;
+            height: 580px;
+            box-shadow: 5px 5px 5px #888;
+        }
+    </style>
+    <link rel="stylesheet" href=" https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src=" https://unpkg.com/leaflet@1.6.0/dist/leaflet.js "></script>
+</head>
+
+<body>
+    <div id='map'>
+    </div>
+    <script>
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+                + 'contributors',
+            maxZoom: 18
+        });
+
+        var cities = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
+            layers: 'ciudades',
+            format: 'image/png',
+            transparent: true,
+            tiled: true,
+            attribution: "Natural Earth",
+        });
+
+        var hidro = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
+            layers: 'hidrografia',
+            format: 'image/png',
+            transparent: true,
+            tiled: true,
+            attribution: "Natural Earth",
+        });
+
+        var pais = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
+            layers: 'paises',
+            format: 'image/png',
+            transparent: true,
+            tiled: true,
+            attribution: "Natural Earth",
+        });
+
+        var map = L.map('map', {
+            center: [1.6218033672028551, -75.6107437926324],
+            zoom: 15,
+            layers: [osm, cities, hidro, pais],
+            scrollWheelZoom: false,
+        });
+        L.control.scale().addTo(map);
+
+        var marker = L.marker([1.6212209023124762, -75.60519035248312], {
+            draggable: true,
+            title: 'Aquí'
+        }).addTo(map)
+            .bindPopup('Universidad de la Amazonia')
+            .openPopup();
+
+        var myIcon = L.icon({
+            iconUrl: ' http://mappinggis.com/wp-content/uploads/2015/03/logo_mappinggis_32331.png',
+            iconSize: [30, 30],
+            popupAnchor: [-1, -10]
+        });
+
+        var marker_flor = L.marker([1.6149094999367575, -75.61392898954756], {
+            draggable: true,
+            title: 'Aquí'
+        }).addTo(map)
+            .bindPopup('Alcaldia de Florencia')
+            .openPopup();
+
+        var myIcon_flor = L.icon({
+            iconUrl: ' http://mappinggis.com/wp-content/uploads/2015/03/logo_mappinggis_32331.png',
+            iconSize: [30, 30],
+            popupAnchor: [-1, -10]
+        });
+
+        var circle = L.circle([1.6149094999367575, -75.61392898954756], 500, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+        }).addTo(map);
+
+        var marker_Plaza = L.marker([1.614982888149762, -75.6132793474858], {
+            draggable: true,
+            title: 'Aquí'
+        }).addTo(map)
+            .bindPopup('Plaza Santander')
+            .openPopup();
+
+        var polygon = L.polygon([
+            [1.615169570852298, -75.61364199320599],
+            [1.6153652943028638, -75.61306263610527],
+            [1.614753993600236, -75.6129104207559],
+            [1.614563632378979, -75.6134837428868]
+        ]).addTo(map)
+            .bindPopup('Plaza Santander');
+
+        //Ruto casa a Universidad
+        var pointA = new L.LatLng(1.625027175620261, -75.59863660605872);
+        var pointB = new L.LatLng(1.6239547232392415, -75.59911940364263);
+        var pointC = new L.LatLng(1.624555296630638, -75.59989187982521);
+        var pointD = new L.LatLng(1.6230632467444686, -75.6007602449473);
+        var pointE = new L.LatLng(1.6233554902036238, -75.60164805605996);
+        var pointF = new L.LatLng(1.6221650670309145, -75.60287382565319);
+        var pointG = new L.LatLng(1.6221731104261543, -75.60288991888034);
+        var pointH = new L.LatLng(1.6218460120317688, -75.60429807863986);
+        var latlngs = [pointA, pointB, pointC, pointD, pointE,pointF,pointG,pointH];
+        var polyline = L.polyline(
+            latlngs, { color: 'red' }
+        )
+            .addTo(map)
+            .bindPopup('Ruta Universidad de la Amazonia');
+    </script>
+</body>
+
+</html>
